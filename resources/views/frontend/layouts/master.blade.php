@@ -53,7 +53,7 @@
                 </button>
             </div>
 
-            <div class="collapse navbar-collapse" id="navbarResponsive" style="margin-left: 400px">
+            <div class="collapse navbar-collapse" id="navbarResponsive" style="margin-left: 200px">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('home') }}"
@@ -101,6 +101,10 @@
                                 <form action="{{ route('logout') }}" method="post" class="dropdown-menu"
                                     aria-labelledby="userdrop">
                                     @csrf
+                                    @if (Auth::user()->role != 'user')
+                                        <a href="/{{ Str::lower(Auth::user()->role) }}"
+                                            class="dropdown-item">{{ Str::ucfirst(Auth::user()->role) }} Pannel</a>
+                                    @endif
 
                                     <button class="dropdown-item" href="#"><i class="fa fa-sign-out"> Logout
                                         </i></button>
@@ -121,9 +125,9 @@
     <!-- Remove the container if you want to extend the Footer to full width. -->
     {{-- <div class="container my-5"> --}}
 
-    <footer class="text-white text-center text-lg-start" style="background-color: #1c1c1c !important; margin-top:5px">
+    <footer class="text-white text-center text-lg-start" style="background-color: #1c1c1c !important;">
         <!-- Grid container -->
-        <div class="container p-4">
+        <div class="container p-4 pb-1">
             <!--Grid row-->
             <div class="row mt-4">
                 <!--Grid column-->
@@ -182,6 +186,7 @@
                             ->latest()
                             ->first();
                     @endphp
+
                     @if ($viewwantedboard)
                         <div class="row">
                             <div class="col">
@@ -221,6 +226,7 @@
     <!-- End of .container -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('frontend/js/clean-blog.js') }}"></script>
+    @yield('scripts')
 </body>
 
 </html>

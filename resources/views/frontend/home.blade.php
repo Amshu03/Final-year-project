@@ -1,12 +1,12 @@
 @extends('frontend.layouts.master')
 @section('main_content')
-    <div id="empresa" style="padding: 20px; margin-top:1px">
-        <div class="container">
-            <div class="row"
-                style="border: none;
-            border-radius: 5px;
-            box-shadow: 0px 0 30px rgb(1 41 112 / 10%);
-            background-image: linear-gradient(to right, rgb(252, 249, 249) , rgb(184, 184, 182));">
+    <div id="empresa"
+        style="border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0 30px rgb(1 41 112 / 10%);
+    background-image: linear-gradient(to right, rgb(252, 249, 249) , rgb(184, 184, 182));">
+        <div class="container pb-3">
+            <div class="row">
                 <div class="col-sm-6 col-md-7 col-lg-7" style="padding-top: 84px; margin-top: 129px">
                     <h1 style=" font-size: 50px">About Crime</h1>
                     <p
@@ -27,31 +27,31 @@
                         use of the online reporting system for crimes.
                     </p>
                     <a href="{{ route('front.crime.remport') }}"
-                    style="box-shadow: 0px 0 30px rgb(1 41 112 / 25%);
+                        style="
                     padding: 15px;
                     border-radius:10px;
                     border: 1px solid #00000c;
                     margin-left: 5px;">
-                    File
-                    complaint &nbsp; &nbsp;&nbsp; </a> 
+                        File
+                        complaint </a> &nbsp;
 
                     <a href="{{ url('/reportwantedcrime') }}"
-                        style="box-shadow: 0px 0 30px rgb(1 41 112 / 25%);
+                        style="
                         padding: 15px;
                         border: 1px solid #000005;
                         border-radius:10px;
-                        margin-left: 5px;">Report
+                        margin-left: 2px;">Report
                         wanted
-                        crime &nbsp; &nbsp; &nbsp;</a>  
+                        crime </a>&nbsp;
 
                     <a href="{{ url('/viewwantedboard') }}"
-                        style="box-shadow: 0px 0 30px rgb(1 41 112 / 25%);
+                        style="
                     padding: 15px;
                     border-radius:10px;
                     border: 1px solid #000008;">View
                         wanted board</a>
-                        
-                        
+
+
                 </div>
                 <div class="col-sm-6 col-md-5 col-lg-5 col-xl-5" style="margin-top: -50px">
                     <img src="{{ asset('frontend/img/hand.png') }}"
@@ -69,9 +69,9 @@
                 padding-top: 0px;
                 margin-bottom: 27px;
                 margin-top: 341px;
-                
+
               "
-                width="451" height="360" />
+                        width="451" height="360" />
                 </div>
             </div>
         </div>

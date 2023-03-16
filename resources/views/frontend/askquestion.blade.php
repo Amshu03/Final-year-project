@@ -43,16 +43,24 @@
                     and hope that this system makes it convenient for you to report any
                     incidents you may have witnessed or experienced.
                 </p>
-                <form id="qn" name="sentMessage">
+                @if (session('success'))
+                    <div class="alert alert-success  fade show" role="alert">
+
+                        <strong>Success: </strong> {{ session('success') }}
+                    </div>
+                @endif
+                <form id="qn" action="{{ route('front.askquestion.store') }}" method="post" name="sentMessage">
+                    @csrf
                     <div class="control-group">
                         <div class="form-floating controls mb-3">
-                            <input class="form-control" type="text" id="name" required=""
+                            <input class="form-control" type="text" name="question" id="name" required=""
                                 placeholder="Name" /><label class="form-label" for="text">Questions:&nbsp;</label>
                         </div>
                     </div>
                     <div class="control-group"></div>
                     <div class="mb-3">
-                        <button class="btn btn-dark" id="sendMessageButton" type="submit" style=" border-radius:6px
+                        <button class="btn btn-dark" id="sendMessageButton" type="submit"
+                            style=" border-radius:6px
               ">
                             Send
                         </button>

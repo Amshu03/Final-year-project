@@ -50,6 +50,7 @@ class FirReport extends Model
         'properties_stole_file',
         'detail_of_known_file',
         'are_you_18',
+        'lat', 'lng',
         'uploder_id',
     ];
 }

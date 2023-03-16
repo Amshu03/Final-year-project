@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CrimeNotify;
 use App\Models\crimereport;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CrimereportController extends Controller
 {
@@ -50,7 +53,7 @@ class CrimereportController extends Controller
             'fullname' => 'required',
             'address' => 'required',
             'gender' => 'required',
-            'dob' => 'required|before_or_equal:today'
+            // 'dob' => 'required|before_or_equal:today'
         ]);
         // dd($request->incidentimage);
         $crimereport = new crimereport();
@@ -62,6 +65,8 @@ class CrimereportController extends Controller
         $crimereport->contact = $request->contact;
         $crimereport->email = $request->email;
         $crimereport->dob = $request->dob;
+        $crimereport->lat = $request->lat;
+        $crimereport->lng = $request->lng;
         $crimereport->gender = $request->gender;
         $crimereport->drivinglicno = $request->drivinglicno;
         $crimereport->uploder_id = Auth::user()->id;
@@ -81,6 +86,11 @@ class CrimereportController extends Controller
         $crimereport->incidenttime = $request->incidenttime;
         $crimereport->incidentdescription = $request->incidentdescription;
         $crimereport->save();
+
+        foreach (User::where('role', 'Police')->get() as $police) {
+            Mail::to($police->email)->send(new CrimeNotify());
+        }
+
         return back()->with('success', 'crimereport Complant Successfully!');
     }
 

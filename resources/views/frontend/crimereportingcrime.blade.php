@@ -1,10 +1,51 @@
 @extends('frontend.layouts.master')
+@section('scripts')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+    <script>
+        var map = L.map('map').setView([26.66286822930185, 87.27435207380042], 13);
+
+        var popup = L.popup();
+        var lat = 0;
+        var lng = 0;
+        var layerGroup = L.layerGroup();
+
+        function onMapClick(e) {
+            // console.log(e);
+            lat = e.latlng.lat;
+            lng = e.latlng.lng;
+            document.getElementById('lat').value = lat;
+            document.getElementById('lng').value = lng;
+            if (map.hasLayer(layerGroup)) {
+                layerGroup.clearLayers();
+                map.removeLayer(layerGroup);
+            }
+            var marker = L.marker([lat, lng]);
+            layerGroup.addLayer(marker);
+            map.addLayer(layerGroup);
+        }
+
+        map.on('click', onMapClick);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+    </script>
+@endsection
 @section('main_content')
     <div id="empresa" style="padding: 20px; margin: 1px">
         <div class="container"
             style="border: none;
         border-radius: 5px;
-        box-shadow: 0px 0 30px rgb(1 41 112 / 10%); background-image: linear-gradient(to right, #fff , rgb(104, 103, 103));">
+        box-shadow: 0px 0 30px rgb(1 41 112 / 10%);">
             <form method="post" action="{{ route('front.crimereport.remport.store') }}" enctype="multipart/form-data"
                 style=" padding-top: 84px; margin-top: 100px">
                 @csrf
@@ -28,23 +69,6 @@
                         placeholder="">
 
                 </div>
-                {{-- <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Are you over 18 years of age?</label>
-                    <div class="form-check">
-                        <input class="form-check-input" value="yes" type="radio" name="eightenornot"
-                            id="eightenornot1">
-                        <label class="form-check-label" for="eightenornot1">
-                            Yes
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" value="no" type="radio" name="eightenornot"
-                            id="eightenornot2">
-                        <label class="form-check-label" for="eightenornotgender2">
-                            No
-                        </label>
-                    </div>
-                </div> --}}
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Please select a proper person type according to
                         the definition below.</label>
@@ -92,16 +116,35 @@
                     <label for="exampleFormControlInput1" class="form-label">Full Name</label>
                     <input type="text" name="fullname" class="form-control" id="exampleFormControlInput1" placeholder="">
                 </div>
+
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Are you over 18 years of age?</label>
+                    <div class="form-check">
+                        <input class="form-check-input" value="yes" type="radio" name="eightenornot"
+                            id="eightenornot1">
+                        <label class="form-check-label" for="eightenornot1">
+                            Yes
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" value="no" type="radio" name="eightenornot"
+                            id="eightenornot2">
+                        <label class="form-check-label" for="eightenornotgender2">
+                            No
+                        </label>
+                    </div>
+                </div>
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Address</label>
-                    <input type="text" name="address" class="form-control" id="exampleFormControlInput1" placeholder="">
+                    <input type="text" name="address" class="form-control" id="exampleFormControlInput1"
+                        placeholder="">
                 </div>
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Contact</label>
                     <input type="text" name="contact" class="form-control" id="exampleFormControlInput1"
                         placeholder="">
                 </div>
-                <div class="mb-3">
+                {{-- <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Email</label>
                     <input type="text" name="email" class="form-control" id="exampleFormControlInput1"
                         placeholder="">
@@ -110,7 +153,7 @@
                     <label for="exampleFormControlInput1" class="form-label">DOB</label>
                     <input type="date" name="dob" class="form-control" id="exampleFormControlInput1"
                         placeholder="">
-                </div>
+                </div> --}}
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Gender.</label>
                     <div class="form-check">
@@ -134,10 +177,16 @@
                         </label>
                     </div>
                 </div>
-                <div class="mb-3">
+                {{-- <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Driver Licensing No</label>
                     <input type="number" name="drivinglicno" class="form-control" id="exampleFormControlInput1"
                         placeholder="">
+                </div> --}}
+
+                <div class="mb-3">
+                    <div id="map"></div>
+                    <input type="text" class="d-none" name="lat" id="lat">
+                    <input type="text" class="d-none" name="lng" id="lng">
                 </div>
                 <button type="submit" class="btn btn-dark" style="border-radius:6px">Submit</button>
             </form>

@@ -4,8 +4,8 @@
         .contact-container {
             background: #FFFFFF;
             margin-top: 150px;
-            background-image: linear-gradient(to right, rgb(255, 249, 249) , rgb(163, 163, 160));
-            
+            background-image: linear-gradient(to right, rgb(255, 249, 249), rgb(163, 163, 160));
+
         }
 
         .contact-container .contact-form .title {
@@ -60,13 +60,13 @@
                         width="100%" height="650px" style="border:0;" allowfullscreen="" loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
-                @if (session('success'))
-                    <div class="alert alert-success  fade show" role="alert">
-
-                        <strong>Success: </strong> {{ session('success') }}
-                    </div>
-                @endif
                 <div class="contact-form col-md-7">
+                    @if (session('success'))
+                        <div class="alert alert-success  fade show" role="alert">
+
+                            <strong>Success: </strong> {{ session('success') }}
+                        </div>
+                    @endif
                     <h2 class="subtitle" style="margin-left:65px">We are here assist you.</h2>
                     <form action="" method="post">
                         @csrf
@@ -75,11 +75,15 @@
                                 <strong>Error: </strong>{{ $error }}
                             </div>
                         @endforeach
-                        <input class="border rounded-pill form-control" type="text" name="name" placeholder="Your Name"/>
-                        <input class="border rounded-pill form-control" type="email" name="email" placeholder="Your E-mail Adress" />
-                        <input class="border rounded-pill form-control" type="tel" name="phone" placeholder="Your Phone Number" />
+                        <input class="border rounded-pill form-control" type="text" name="name"
+                            placeholder="Your Name" />
+                        <input class="border rounded-pill form-control" type="email" name="email"
+                            placeholder="Your E-mail Adress" />
+                        <input class="border rounded-pill form-control" type="tel" name="phone"
+                            placeholder="Your Phone Number" />
                         <textarea name="message" id="" rows="8" placeholder="Your Message" style="border-radius:10px"></textarea>
-                        <button class="btn btn-dark mb-4" style="margin-left: 100px; border-radius:20px">Get a Call Back</button>
+                        <button class="btn btn-dark mb-4" style="margin-left: 100px; border-radius:20px">Get a Call
+                            Back</button>
                     </form>
                 </div>
             </div>

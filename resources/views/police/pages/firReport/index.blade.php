@@ -17,7 +17,7 @@
                                 <thead>
                                     <tr>
                                         {{-- <th> ID </th> --}}
-
+                                        <th>view</th>
                                         <th> Dis </th>
                                         <th> ps </th>
                                         <th> year </th>
@@ -67,6 +67,9 @@
                                         @foreach ($firReport as $user)
                                             <tr>
                                                 {{-- <td> {{ $user->id }} </td> --}}
+                                                <td> <button class="btn btn-info"
+                                                        onclick="onMapClick({{ $user->lat }}, {{ $user->lng }})">Map</button>
+                                                </td>
                                                 <td> {{ $user->dist }} </td>
                                                 <td> {{ $user->ps }} </td>
                                                 <td> {{ $user->year }} </td>
@@ -134,6 +137,8 @@
                                     @endisset
                                 </tbody>
                             </table>
+
+                            <div id="map"></div>
                         </div>
                     </div>
                 </div>
@@ -141,4 +146,45 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+    <script>
+        var map = L.map('map').setView([26.66286822930185, 87.27435207380042], 13);
+
+        var popup = L.popup();
+        var lat = 0;
+        var lng = 0;
+        var layerGroup = L.layerGroup();
+
+        function onMapClick(lat, lng) {
+            // console.log(e);
+            // lat = e.latlng.lat;
+            // lng = e.latlng.lng;
+            // document.getElementById('lat').value = lat;
+            // document.getElementById('lng').value = lng;
+            if (map.hasLayer(layerGroup)) {
+                layerGroup.clearLayers();
+                map.removeLayer(layerGroup);
+            }
+            var marker = L.marker([lat, lng]);
+            layerGroup.addLayer(marker);
+            map.addLayer(layerGroup);
+        }
+
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+    </script>
 @endsection

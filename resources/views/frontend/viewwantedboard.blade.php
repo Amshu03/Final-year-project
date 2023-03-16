@@ -8,10 +8,10 @@
             background-image: linear-gradient(to right, rgb(252, 249, 249) , rgb(184, 184, 182))">
                 @isset($viewwantedboard)
                 @foreach ($viewwantedboard as $viewwan)
-                <div class="col-sm-4 col-md-4 col-lg-4 col-12" style=" margin-top: 29px">
+                <div class="col-sm-4 col-md-4 col-lg-4 col-12" style=" margin-top: -10px">
                     <div class="card">
                         <div class="card" style="width: 100%;">
-                            <img src="{{ asset($viewwan->image) }}" class="card-img-top" alt="..." style="height: 350px;">
+                            <img src="{{ asset($viewwan->image) }}" class="card-img-top" alt="..." style="height: 400px;">
                             <div class="card-body">
                               <h5 class="card-title">{{ $viewwan->datetime }}</h5>
                               <p class="card-text">{{ $viewwan->description }}</p>

@@ -49,9 +49,9 @@
                                             <a href="{{ route('admin.reportwantedcrime.edit', $user->id) }}" type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary" data-original-title="Edit">
                                                 <i class="fa fa-edit" style="color: white"></i>
                                             </a>
-                                            <a href="{{ route('admin.user.delete', $user->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
+                                            {{-- <a href="{{ route('admin.user.delete', $user->id) }}" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove">
                                                 <i class="fa fa-times" style="color: white"></i>
-                                            </a>
+                                            </a> --}}
                                         </div>
                                     </td>
                                 </tr>

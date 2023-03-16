@@ -1,4 +1,46 @@
 @extends('police.layouts.headerfooter')
+
+@section('scripts')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+    <script>
+        var map = L.map('map').setView([26.66286822930185, 87.27435207380042], 13);
+
+        var popup = L.popup();
+        var lat = 0;
+        var lng = 0;
+        var layerGroup = L.layerGroup();
+
+        function onMapClick(lat, lng) {
+            // console.log(e);
+            // lat = e.latlng.lat;
+            // lng = e.latlng.lng;
+            // document.getElementById('lat').value = lat;
+            // document.getElementById('lng').value = lng;
+            if (map.hasLayer(layerGroup)) {
+                layerGroup.clearLayers();
+                map.removeLayer(layerGroup);
+            }
+            var marker = L.marker([lat, lng]);
+            layerGroup.addLayer(marker);
+            map.addLayer(layerGroup);
+        }
+
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+    </script>
+@endsection
+
 @section('body-content')
 
 
@@ -16,6 +58,7 @@
                             <table id="example" class="table table-striped table-bordered second" style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th> View </th>
                                         <th> Incident Type </th>
                                         <th> Incident Photo </th>
                                         <th> Incident Address </th>
@@ -37,6 +80,10 @@
                                     @isset($crimeReport)
                                         @foreach ($crimeReport as $user)
                                             <tr>
+
+                                                <td> <button class="btn btn-info"
+                                                        onclick="onMapClick({{ $user->lat }}, {{ $user->lng }})">Map</button>
+                                                </td>
                                                 <td> {{ $user->incidentype }} </td>
                                                 <td>
                                                     <img src="{{ asset($user->incidentimage) }}"
@@ -74,6 +121,8 @@
                                     @endisset
                                 </tbody>
                             </table>
+
+                            <div id="map"></div>
                         </div>
                     </div>
                 </div>

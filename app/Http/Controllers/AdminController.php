@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AskQuestion;
+use App\Models\Contact;
 use App\Models\crimereport;
 use App\Models\FirReport;
 use App\Models\reportwantedcrime;
@@ -67,5 +69,16 @@ class AdminController extends Controller
         $users->image = $title;
         $users->save();
         return back()->with('status', 'User Updated Successfully');
+    }
+
+    public function questions()
+    {
+        $questions = AskQuestion::latest()->get();
+        return view('backend.pages.questions', compact('questions'));
+    }
+    public function contacts()
+    {
+        $contacts = Contact::latest()->get();
+        return view('backend.pages.contacts', compact('contacts'));
     }
 }

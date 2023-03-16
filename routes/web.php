@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AskQuestionController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FirReportController;
 use App\Http\Controllers\FrontendController;
@@ -30,9 +31,10 @@ Route::get('/home', [FrontendController::class, 'homepage'])->name('home');
 Route::get('/about', [FrontendController::class, 'aboutpage'])->name('front.about');
 Route::get('/contact', [FrontendController::class, 'contactpage'])->name('front.contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('front.contact.store');
+Route::get('/report', [FrontendController::class, 'report'])->middleware('auth')->name('front.report');
 Route::middleware(['auth'])->group(function () {
     Route::get('/ask-question', [FrontendController::class, 'askquestion'])->name('front.askquestion');
-    Route::post('/ask-question', [ContactController::class, 'askquestion'])->name('front.askquestion.store');
+    Route::post('/ask-question', [AskQuestionController::class, 'store'])->name('front.askquestion.store');
     Route::get('/reportwantedcrime', [FrontendController::class, 'reportwantedcrime'])->name('reportwantedcrime');
     Route::post('/reportwantedcrime', [ReportwantedcrimeController::class, 'store'])->name('reportwantedcrime.store');
     Route::get('/viewwantedboard', [FrontendController::class, 'viewwantedboard'])->name('viewwantedboard');
@@ -44,6 +46,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('admin')->middleware('admin')->group(function () {
         Route::get('/', [App\Http\Controllers\AdminController::class, 'admin']);
+        Route::get('/questions', [App\Http\Controllers\AdminController::class, 'questions'])->name('questions');
+        Route::get('/contacts', [App\Http\Controllers\AdminController::class, 'contacts'])->name('contacts');
         Route::get('/profile', [App\Http\Controllers\AdminController::class, 'profile'])->name('my.profile');
         Route::post('/profile/{id}/update', [App\Http\Controllers\AdminController::class, 'profileUpdate'])->name('my.profile.update');
 

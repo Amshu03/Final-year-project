@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CrimeNotify;
+use App\Mail\FirNotify;
 use App\Models\FirReport;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class FirReportController extends Controller
 {
@@ -57,12 +61,12 @@ class FirReportController extends Controller
             // 'outside_of_limit_ps_name' => 'required',
             // 'district' => 'required',
             'name' => 'required',
-            'father_or_husband_name' => 'required',
+            // 'father_or_husband_name' => 'required',
             // 'date_of_birth' => 'required',
-            'nationality' => 'required',
-            'occupation' => 'required',
+            // 'nationality' => 'required',
+            // 'occupation' => 'required',
             'person_address' => 'required',
-            'value_of_properties_stolen' => 'required',
+            // 'value_of_properties_stolen' => 'required',
             // 'investigation' => 'required',
             // 'rank' => 'required',
             // 'transfer_to_ps' => 'required',
@@ -81,11 +85,12 @@ class FirReportController extends Controller
             // 'section' => 'required|array',
         ]);
         $data = $request->all();
-        // $data['act_section'] = '';
-        // foreach ($request->act as $key => $act) {
-        //     $act_section = $act . '`' . $request->section[$key];
-        //     $data['act_section'] .= $act_section . '|';
-        // }
+        $last = FirReport::latest()->first();
+        if ($last) {
+            $data['fir_no'] = 'OCR-' . $last->id + 1;
+        } else {
+            $data['fir_no'] = 'OCR-1';
+        }
         $data['detail_of_known_file'] = null;
         if ($request->hasFile('detail_of_known_file')) {
             $img = $request->file('detail_of_known_file');
@@ -111,7 +116,12 @@ class FirReportController extends Controller
             $img->move($img_path, $img_name);
             $data['evidance_file'] = $img_path . $img_name;
         }
-        FirReport::create($data);
+        $fir = FirReport::create($data);
+
+        foreach (User::where('role', 'Police')->get() as $police) {
+            Mail::to($police->email)->send(new FirNotify());
+        }
+
         return back()->with('success', 'Fir Complant Successfully!');
     }
 

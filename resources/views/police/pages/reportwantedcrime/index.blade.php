@@ -58,11 +58,11 @@
                                                             class="btn btn-link btn-primary" data-original-title="Edit">
                                                             <i class="fa fa-edit" style="color: white"></i>
                                                         </a>
-                                                        <a href="{{ route('police.user.delete', $user->id) }}"
+                                                        {{-- <a href="{{ route('police.reportwantedcrime.delete', $user->id) }}"
                                                             data-toggle="tooltip" title="" class="btn btn-link btn-danger"
                                                             data-original-title="Remove">
                                                             <i class="fa fa-times" style="color: white"></i>
-                                                        </a>
+                                                        </a> --}}
                                                     </div>
                                                 </td>
                                             </tr>

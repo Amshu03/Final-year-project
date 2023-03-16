@@ -73,11 +73,15 @@
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                         data-bs-toggle="dropdown">
-                        <img src="{{ asset('backend/assets/img/police.jpg') }}" alt="Profile" class="rounded-pill">
+                        <img src="{{ asset(Auth::user()->image) }}" alt="Profile" class="rounded-pill">
                         <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->name }}</span>
                     </a><!-- End Profile Iamge Icon -->
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li>
+                            <a href="/" target="_blank" class="dropdown-item d-flex align-items-center"
+                                rel="noopener noreferrer"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+                        </li>
                         <li>
                             <a href="{{ route('police.my.profile') }}" target="_blank"
                                 class="dropdown-item d-flex align-items-center" rel="noopener noreferrer"><i
@@ -209,7 +213,7 @@
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
-
+    @yield('scripts')
 </body>
 
 </html>

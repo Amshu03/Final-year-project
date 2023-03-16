@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\reportwantedcrime;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,7 +23,7 @@ class FrontendController extends Controller
     }
     public function aboutpage()
     {
-        return view('frontend.home');
+        return view('frontend.about');
     }
 
     public function contactpage()
@@ -29,6 +31,16 @@ class FrontendController extends Controller
         return view('frontend.contact');
     }
 
+    public function report(Request $request)
+    {
+        $date = $request->date;
+        // dd($date);
+        $user = User::where('id', Auth::user()->id)->first();
+        $firreport = $user->firreports()->whereDate('created_at', $date)->get();
+        $crimereport = $user->crimereports()->whereDate('created_at', $date)->get();
+        $reports =  $firreport->merge($crimereport);
+        return view('frontend.report', compact('reports'));
+    }
     public function askquestion()
     {
         return view('frontend.askquestion');

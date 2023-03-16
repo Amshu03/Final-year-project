@@ -1,7 +1,48 @@
 @extends('frontend.layouts.master')
+@section('scripts')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+    <script>
+        var map = L.map('map').setView([26.66286822930185, 87.27435207380042], 13);
+
+        var popup = L.popup();
+        var lat = 0;
+        var lng = 0;
+        var layerGroup = L.layerGroup();
+
+        function onMapClick(e) {
+            // console.log(e);
+            lat = e.latlng.lat;
+            lng = e.latlng.lng;
+            document.getElementById('lat').value = lat;
+            document.getElementById('lng').value = lng;
+            if (map.hasLayer(layerGroup)) {
+                layerGroup.clearLayers();
+                map.removeLayer(layerGroup);
+            }
+            var marker = L.marker([lat, lng]);
+            layerGroup.addLayer(marker);
+            map.addLayer(layerGroup);
+        }
+
+        map.on('click', onMapClick);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+    </script>
+@endsection
 @section('main_content')
     <div id="empresa" style="padding: 20px; margin: 1px">
-        <div class="container" style="background-image: linear-gradient(to right, rgb(255, 255, 255) , rgb(73, 73, 73));">
+        <div class="container">
             <form method="post" action="{{ route('front.fir.remport.store') }}" enctype="multipart/form-data"
                 style="margin-left: -30px; padding-top: 84px; margin-top: 100px">
                 @csrf
@@ -21,10 +62,24 @@
                         <p>(Under Section 154 Cr.P.C)</p>
                     </strong>
                 </div>
-                <p>1.&nbsp;Dist. <input type="text" name="dist">&nbsp;Police Station <input type="text"
-                        name="ps"> &nbsp;Year
-                    <input type="text" name="year"> F.I.R. No.
-                    <input type="number" name="fir_no"> <br> <br>
+                <p>1.&nbsp;District <select class="" name="dist" id="district">
+                        <option value="0">-- Select District -- </option>
+                        <option value="Bhojpur">Bhojpur</option>
+                        <option value="Dhankuta">Dhankuta</option>
+                        <option value="Ilam">Ilam</option>
+                        <option value="Jhapa">Jhapa</option>
+                        <option value="Khotang">Khotang</option>
+                        <option value="Morang">Morang</option>
+                        <option value="Okhaldhunga">Okhaldhunga</option>
+                        <option value="Panchthar">Panchthar</option>
+                        <option value="Sankhuwasabha">Sankhuwasabha</option>
+                        <option value="Solukhumbu">Solukhumbu</option>
+                        <option value="Sunsari">Sunsari</option>
+                        <option value="Taplejung">Taplejung</option>
+                        <option value="Terhathum">Terhathum</option>
+                        <option value="Udayapur">Udayapur</option>
+                    </select> &nbsp;Station Address<input type="text" name="ps"> &nbsp;Year
+                    <input type="text" name="year">
                     &nbsp;&nbsp; Complaint Date
                     <input type="date" name="date">
                 </p>
@@ -66,9 +121,9 @@
                 <p>(a)&nbsp;Name
                     <input type="text" name="name" id="">
                 </p>
-                <p>(b)&nbsp;Father&rsquo;s / Husband&rsquo;s Name
+                {{-- <p>(b)&nbsp;Father&rsquo;s / Husband&rsquo;s Name
                     <input type="text" name="father_or_husband_name" id="">
-                </p>
+                </p> --}}
                 <p>(c)
                     <label for="exampleFormControlInput1" class="form-label">Are you over 18 years of age?</label>
                 <div class="form-check">
@@ -84,15 +139,15 @@
                     </label>
                 </div>
                 </p>
-                <p>&nbsp; &nbsp; (d) Nationality
+                {{-- <p>&nbsp; &nbsp; (d) Nationality
                     <input type="text" name="nationality">
-                </p>
+                </p> --}}
                 {{-- <p>(e)&nbsp;Passport No: ....................... Date of Issue: .................... Place of Issue
                     ....................
                 </p> --}}
-                <p>&nbsp; &nbsp; (e)&nbsp;Occupation:
+                {{-- <p>&nbsp; &nbsp; (e)&nbsp;Occupation:
                     <input type="text" name="occupation">
-                </p>
+                </p> --}}
                 <p>&nbsp; &nbsp; (f)&nbsp;Address:
                     <input type="text" name="person_address">
                 </p>
@@ -109,9 +164,9 @@
                 <input type="file" name="properties_stole_file"> <br> <br>
                 <textarea name="particulars_of_properties_stolen" id="" cols="" rows="10" style="width:100%;"></textarea>
 
-                <p>5.&nbsp; <b>* Total value of the properties stole / involved: </b>
-                </p>
-                <input type="text" name="value_of_properties_stolen"> <br>
+                {{-- <p>5.&nbsp; <b>* Total value of the properties stole / involved: </b>
+                </p> --}}
+                {{-- <input type="text" name="value_of_properties_stolen"> <br> --}}
 
                 {{-- <p>7.&nbsp;* Inquest Report /U.D. Case No., if any:
                 </p> --}}
@@ -139,9 +194,15 @@
                     <p style="text-align: right;">*Rank:<input type="text" name="officer_rank">No. <input
                             type="text" name="officer_no"></p>
                 </div> --}}
-                <p>6.&nbsp; <b>Attach evidance if necessary </b></p>
+                <p>5.&nbsp; <b>Attach evidance if necessary </b></p>
                 <input type="file" name="evidance_file">
-                <p>7. <b> Date &amp; time of despatch to the court: <input type="text" name="officer_date"> </b></p>
+                {{-- <p>7. <b> Date &amp; time of despatch to the court: <input type="text" name="officer_date"> </b></p> --}}
+
+                <div class="mb-3">
+                    <div id="map"></div>
+                    <input type="text" class="d-none" name="lat" id="lat">
+                    <input type="text" class="d-none" name="lng" id="lng">
+                </div>
                 <button type="submit" class="btn btn-dark">Submit</button>
             </form>
         </div>
